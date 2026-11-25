@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}История боёв{% endblock %}
+{% block content %}
+<h1>История боёв</h1>
+{% if config.FROZEN %}
+  <p class="note">История сохраняется только на сервере. Запусти app.py у себя на компьютере, чтобы её увидеть.</p>
+{% elif battles %}
+  <ul>
+    {% for b in battles|reverse %}<li>{{ b.first }} ⚔ {{ b.second }} — победил {{ b.winner }}</li>{% endfor %}
+  </ul>
+{% else %}
+  <p>Боёв пока не было. Выбери бой на главной странице.</p>
+{% endif %}
+{% endblock %}
