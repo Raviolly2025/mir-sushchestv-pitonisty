@@ -1,0 +1,28 @@
+name: Проверка этапов
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  stage:
+    if: ${{ !github.event.repository.is_template }}
+    name: ${{ matrix.title }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - title: "Этап 1: данные мира"
+            test: test_creatures.py
+          - title: "Этап 2: движок боя"
+            test: test_battle.py
+          - title: "Этап 3: сайт"
+            test: test_site.py
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install flask
+      - run: python ci_check.py ${{ matrix.test }}
